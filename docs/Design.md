@@ -111,7 +111,17 @@ Prefer authentic business imagery when available.
 
 ---
 
-### 3. Business / Trust Signals
+### 3. About Preview
+
+Provide a concise business introduction.
+
+Use authentic business/store imagery where possible.
+
+Link to `/hakkimizda`.
+
+---
+
+### 4. Business / Trust Signals
 
 Use only verified facts.
 
@@ -132,7 +142,7 @@ Do not invent:
 
 ---
 
-### 4. Services
+### 5. Services
 
 Present:
 
@@ -144,28 +154,13 @@ Each service should link to the relevant page.
 
 ---
 
-### 5. Inquiry Process
+### 6. Part Photo Examples
 
-Explain the process simply.
+Show a small selection of business-supplied original part photos, after the services section.
 
-Example:
+Do not imply stock availability; link to `/parca-sorgula` for current availability.
 
-1. Enter vehicle information.
-2. Describe the requested part.
-3. Optionally attach an image.
-4. Submit the request.
-
-Provide a clear `Parça Sorgula` CTA.
-
----
-
-### 6. About Preview
-
-Provide a concise business introduction.
-
-Use authentic business/store imagery where possible.
-
-Link to `/hakkimizda`.
+The step-by-step inquiry process is not shown on the homepage; it appears at the top of `/parca-sorgula`, directly above the form.
 
 ---
 
@@ -214,6 +209,15 @@ Include:
 
 ## Spare-Part Inquiry Form
 
+Show the inquiry process simply at the top of the page, above the form:
+
+1. Enter vehicle information.
+2. Describe the requested part.
+3. Optionally attach an image.
+4. Submit the request.
+
+Keep the steps compact so the form stays close to the top, especially on mobile.
+
 Fields:
 
 ### Vehicle Brand
@@ -251,6 +255,16 @@ Required.
 Optional.
 
 Explain supported file restrictions where appropriate.
+
+Provide both click-to-choose (device or gallery) and drag-and-drop.
+
+### Layout
+
+The heading and short description sit inside the form card.
+
+Brand, model, chassis, and phone stack in the left half. The image area fills the right half beside them.
+
+The part description is a full-width field at the bottom, limited to 500 characters.
 
 ---
 

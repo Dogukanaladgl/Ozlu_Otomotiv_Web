@@ -18,7 +18,7 @@ type SectionProps = {
   id?: string;
   children: React.ReactNode;
   className?: string;
-  tone?: "default" | "elevated" | "ink";
+  tone?: "default" | "ink";
 };
 
 export function Section({
@@ -28,15 +28,23 @@ export function Section({
   tone = "default",
 }: SectionProps) {
   const toneClass =
-    tone === "elevated"
-      ? "bg-surface-elevated border-y border-line"
-      : tone === "ink"
-        ? "bg-ink text-white"
-        : "";
+    tone === "ink" ? "relative overflow-hidden bg-ink text-white" : "";
 
   return (
     <section id={id} className={cn("section-y", toneClass, className)}>
-      <Container>{children}</Container>
+      {tone === "ink" ? (
+        <div
+          className="pointer-events-none absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              "radial-gradient(ellipse 60% 50% at 80% 0%, rgba(180,35,24,0.35), transparent 55%)",
+          }}
+          aria-hidden="true"
+        />
+      ) : null}
+      <Container className={tone === "ink" ? "relative" : undefined}>
+        {children}
+      </Container>
     </section>
   );
 }
@@ -67,19 +75,21 @@ export function SectionHeading({
       {eyebrow ? (
         <p
           className={cn(
-            "mb-2 text-xs font-semibold uppercase tracking-[0.14em]",
-            invert ? "text-white/70" : "text-accent",
+            "mb-3 text-xs font-semibold uppercase tracking-[0.16em]",
+            invert ? "text-white/65" : "text-accent",
           )}
         >
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-balance text-2xl font-bold sm:text-3xl">{title}</h2>
+      <h2 className="text-balance text-2xl font-bold sm:text-3xl lg:text-[2rem]">
+        {title}
+      </h2>
       {description ? (
         <p
           className={cn(
-            "mt-3 text-base leading-relaxed",
-            invert ? "text-white/80" : "text-muted",
+            "mt-3.5 text-base leading-relaxed",
+            invert ? "text-white/78" : "text-muted",
           )}
         >
           {description}

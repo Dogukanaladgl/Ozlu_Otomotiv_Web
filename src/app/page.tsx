@@ -1,8 +1,6 @@
 import { AboutPreview } from "@/components/home/AboutPreview";
 import { Hero } from "@/components/home/Hero";
-import { InquiryCta } from "@/components/home/InquiryCta";
-import { InquiryProcess } from "@/components/home/InquiryProcess";
-import { LocationContact } from "@/components/home/LocationContact";
+import { PartPhotos } from "@/components/home/PartPhotos";
 import { ServiceContent } from "@/components/home/ServiceContent";
 import { Services } from "@/components/home/Services";
 import { TrustSignals } from "@/components/home/TrustSignals";
@@ -19,13 +17,11 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <AboutPreview />
       <TrustSignals />
       <Services />
-      <InquiryProcess />
-      <AboutPreview />
+      <PartPhotos />
       <ServiceContent />
-      <InquiryCta />
-      <LocationContact />
     </>
   );
 }

@@ -1,43 +1,61 @@
-import Link from "next/link";
+import { ButtonLink } from "@/components/ui/Button";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { siteConfig } from "@/config/site";
 
 export function AboutPreview() {
   return (
-    <Section tone="elevated">
-      <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+    <Section>
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:gap-12">
         <div>
           <SectionHeading
             eyebrow="Hakkımızda"
-            title={`${siteConfig.name} — Selçuklu’da Hyundai ve Kia odağı`}
+            title={`${siteConfig.name} — Selçuklu’da Hyundai Ve Kia Odağı`}
             description={`${siteConfig.name}, ${siteConfig.address.localityLabel} adresinde Hyundai ve Kia yedek parça alanında faaliyet gösterir. Orijinal / yeni ve orijinal çıkma parçalar için müşterilerimizin taleplerini alırız.`}
           />
           <p className="mt-4 text-sm leading-relaxed text-muted">
             Amacımız, ihtiyacınız olan parçayı doğru araç bilgisiyle
-            değerlendirebilmek ve size net bir dönüş sağlayabilmektir.
+            değerlendirebilmek ve en kısa sürede tarafınıza net bir dönüş sağlayabilmektir.
           </p>
-          <Link
-            href="/hakkimizda"
-            className="mt-5 inline-flex text-sm font-semibold text-accent underline-offset-2 hover:underline"
-          >
-            Daha fazla bilgi →
-          </Link>
+          <div className="mt-6">
+            <ButtonLink href="/hakkimizda" variant="outline">
+              Daha fazla bilgi
+            </ButtonLink>
+          </div>
         </div>
-        <div className="rounded-lg border border-line bg-ink p-8 text-white">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/60">
-            Adres
-          </p>
-          <address className="mt-3 not-italic font-display text-2xl font-semibold leading-snug">
-            {siteConfig.address.neighborhood}
-            <br />
-            {siteConfig.address.streetAddress}
-            <br />
-            {siteConfig.address.postalCode} {siteConfig.address.localityLabel}
-          </address>
-          <p className="mt-4 text-sm text-white/75">
-            Fiziksel mağazamızı ziyaret etmek veya yol tarifi almak için iletişim
-            sayfasını kullanabilirsiniz.
-          </p>
+        <div className="relative w-full overflow-hidden rounded-[var(--radius-panel)] bg-ink p-6 text-white sm:p-7">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-50"
+            style={{
+              backgroundImage:
+                "radial-gradient(ellipse 70% 60% at 100% 0%, rgba(180,35,24,0.35), transparent 55%)",
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative flex flex-col">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+              Adres
+            </p>
+            <address className="mt-4 not-italic">
+              <span className="block font-display text-2xl font-semibold leading-tight">
+                {siteConfig.address.neighborhood}
+              </span>
+              <span className="mt-1 block font-display text-2xl font-semibold leading-tight">
+                {siteConfig.address.streetAddress}
+              </span>
+              <span className="mt-3 block text-sm text-white/70">
+                {siteConfig.address.postalCode} {siteConfig.address.localityLabel}
+              </span>
+            </address>
+            <p className="mt-5 text-sm leading-relaxed text-white/72">
+              Mağazayı ziyaret etmek veya yol tarifi almak için iletişim
+              sayfasına geçebilirsiniz.
+            </p>
+            <div className="mt-6 border-t border-white/15 pt-5">
+              <ButtonLink href="/iletisim" variant="ghost">
+                İletişim
+              </ButtonLink>
+            </div>
+          </div>
         </div>
       </div>
     </Section>

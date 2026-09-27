@@ -2,24 +2,20 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 
 const signals = [
   {
-    title: "Hyundai uzmanlığı",
+    title: "Hyundai Uzmanlığı",
     text: "Hyundai araçlar için yedek parça taleplerine odaklanırız.",
   },
   {
-    title: "Kia uzmanlığı",
+    title: "Kia Uzmanlığı",
     text: "Kia modelleri için parça sorgusu ve tedarik desteği sunarız.",
   },
   {
-    title: "Orijinal / yeni parça",
+    title: "Orijinal / Yeni Parça",
     text: "Orijinal ve yeni yedek parça ihtiyacınız için sorgu alıyoruz.",
   },
   {
-    title: "Orijinal çıkma parça",
+    title: "Orijinal Çıkma Parça",
     text: "Orijinal çıkma / sökme parçalar için de taleplerinizi iletebilirsiniz.",
-  },
-  {
-    title: "Selçuklu / Konya",
-    text: "Fiziksel iş yerimiz Selçuklu, Konya’dadır.",
   },
 ];
 
@@ -28,19 +24,22 @@ export function TrustSignals() {
     <Section>
       <SectionHeading
         eyebrow="Neden Özlü Otomotiv"
-        title="Hyundai ve Kia yedek parçada net odak"
+        title="Hyundai Ve Kia Yedek Parçada Net Odak"
         description="Doğrulanmış işletme bilgileriyle güvenilir ve anlaşılır bir iletişim sunuyoruz. Stok veya fiyat iddiası olmadan, ihtiyacınızı netleştirmenize yardımcı oluruz."
       />
-      <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {signals.map((item) => (
-          <li
-            key={item.title}
-            className="rounded-lg border border-line bg-surface-elevated p-5"
-          >
+          <li key={item.title} className="panel relative flex h-full flex-col overflow-hidden p-6">
+            <span
+              className="absolute inset-y-0 left-0 w-1 bg-accent"
+              aria-hidden="true"
+            />
             <h3 className="font-display text-lg font-semibold text-ink">
               {item.title}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+            <p className="mt-2.5 text-sm leading-relaxed text-muted">
+              {item.text}
+            </p>
           </li>
         ))}
       </ul>

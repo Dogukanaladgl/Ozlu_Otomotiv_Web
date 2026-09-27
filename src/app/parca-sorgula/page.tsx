@@ -1,9 +1,8 @@
 import { InquiryForm } from "@/components/form/InquiryForm";
-import {
-  ContactActions,
-  PendingContactNote,
-} from "@/components/contact/ContactActions";
-import { Container, Section, SectionHeading } from "@/components/ui/Section";
+import { InquirySteps } from "@/components/form/InquirySteps";
+import { ContactActions } from "@/components/contact/ContactActions";
+import { PageHero } from "@/components/ui/PageHero";
+import { Container } from "@/components/ui/Section";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { breadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 import { siteConfig } from "@/config/site";
@@ -24,64 +23,49 @@ export default function InquiryPage() {
           { name: "Parça Sorgula", path: "/parca-sorgula" },
         ])}
       />
-      <header className="border-b border-line bg-ink text-white">
-        <Container className="py-12 sm:py-14">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/65">
-            Birincil iletişim
-          </p>
-          <h1 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-            Parça sorgula
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80">
-            {siteConfig.name} olarak Hyundai ve Kia için parça taleplerinizi
-            bu form üzerinden alıyoruz. Stok listesi yayınlamıyoruz; her talep
-            ayrı incelenir.
-          </p>
-        </Container>
-      </header>
+      <PageHero
+        eyebrow="Birincil iletişim"
+        title="Parça Sorgula"
+        description={`${siteConfig.name} olarak Hyundai ve Kia için parça taleplerinizi bu form üzerinden alıyoruz. Stok listesi yayınlamıyoruz; her talep ayrı incelenir.`}
+        contentClassName="pt-10 pb-0 sm:pt-12"
+      />
 
-      <Section>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
-          <div>
-            <SectionHeading
-              title="Sorgu formu"
-              description="Zorunlu alanları doldurun. Görsel eklemek isteğe bağlıdır."
-            />
-            <div className="mt-6 rounded-lg border border-line bg-surface-elevated p-5 sm:p-7">
+      <section>
+        <Container className="pt-8 pb-[clamp(3.25rem,6.5vw,5.5rem)]">
+          <InquirySteps />
+          <div className="mt-12 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_18rem]">
+            <div className="panel p-6 sm:p-8">
               <InquiryForm />
             </div>
-          </div>
 
-          <aside className="space-y-6">
-            <div className="rounded-lg border border-line bg-white p-5">
+            <aside className="space-y-5">
+            <div className="panel p-5">
               <h2 className="font-display text-lg font-semibold">
-                Ne olur sonra?
+                Peki Sonra Ne Olacak?
               </h2>
               <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-muted">
-                <li>Talebiniz e-posta ile işletmeye iletilir.</li>
-                <li>Araç ve parça bilgisi incelenir.</li>
-                <li>Size dönüş yapılır.</li>
+                <li>Talebiniz tarafımıza iletilir.</li>
+                <li>Araç ve parça bilgileriniz değerlendirilir.</li>
+                <li>En kısa sürede tarafınıza dönüş sağlanır.</li>
               </ol>
-              <p className="mt-3 text-xs text-muted">
-                Yanıt süresi konusunda doğrulanmamış taahhüt vermiyoruz.
-              </p>
             </div>
 
-            <div className="rounded-lg border border-line bg-white p-5">
+            <div className="panel p-5">
               <h2 className="font-display text-lg font-semibold">
-                Alternatif kanallar
+                Alternatif İletişim Tercihleri
               </h2>
               <p className="mt-2 text-sm text-muted">
-                Form dışında da iletişime geçebilirsiniz.
+                Bize form göndermek istemiyorsanız aşağıdaki yollardan da bizimle
+                iletişime geçebilirsiniz.
               </p>
-              <div className="mt-4 space-y-3">
-                <ContactActions showInquiry={false} />
-                <PendingContactNote />
+              <div className="mt-4">
+                <ContactActions showInquiry={false} layout="choices" />
               </div>
             </div>
-          </aside>
-        </div>
-      </Section>
+            </aside>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

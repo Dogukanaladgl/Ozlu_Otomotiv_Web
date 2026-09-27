@@ -1,13 +1,15 @@
-import {
-  ContactActions,
-  PendingContactNote,
-} from "@/components/contact/ContactActions";
-import { ButtonLink } from "@/components/ui/Button";
-import { Container, Section, SectionHeading } from "@/components/ui/Section";
+import { ButtonLink, ExternalLinkButton } from "@/components/ui/Button";
+import { PageHero } from "@/components/ui/PageHero";
+import { Container, SectionHeading } from "@/components/ui/Section";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
+  formatPhoneDisplay,
   getDirectionsUrl,
-  getMapsUrl,
+  getMailtoHref,
+  getTelHref,
+  getWhatsAppHref,
+  hasPhone,
+  hasWhatsApp,
   siteConfig,
 } from "@/config/site";
 import { breadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
@@ -20,6 +22,15 @@ export const metadata = createPageMetadata({
 });
 
 export default function ContactPage() {
+  const mailHref = getMailtoHref();
+  const telHref = getTelHref();
+  const phoneLabel = siteConfig.phone
+    ? formatPhoneDisplay(siteConfig.phone)
+    : null;
+  const whatsappHref = getWhatsAppHref(
+    "Merhaba, yedek parça hakkında bilgi almak istiyorum.",
+  );
+
   return (
     <>
       <JsonLd
@@ -28,85 +39,101 @@ export default function ContactPage() {
           { name: "İletişim", path: "/iletisim" },
         ])}
       />
-      <header className="border-b border-line bg-ink text-white">
-        <Container className="py-12 sm:py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/65">
-            İletişim
-          </p>
-          <h1 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-            Bize ulaşın
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80">
-            Parça sorgusu, telefon, WhatsApp, e-posta veya mağaza ziyareti ile
-            iletişime geçebilirsiniz. Doğrulanmamış iletişim bilgileri
-            gösterilmez.
-          </p>
-        </Container>
-      </header>
+      <PageHero
+        eyebrow="İletişim"
+        title="Bize Ulaşın"
+        description="Parça sorgusu, telefon, WhatsApp veya mağaza ziyareti ile iletişime geçebilirsiniz."
+        contentClassName="pt-10 pb-0 sm:pt-12"
+      />
 
-      <Section>
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div>
-            <SectionHeading
-              title="İletişim kanalları"
-              description="Birincil dönüşüm kanalı parça sorgu formudur."
-            />
-            <div className="mt-6 space-y-4">
-              <ButtonLink href="/parca-sorgula">Parça Sorgula</ButtonLink>
-              <ContactActions showInquiry={false} />
-              <PendingContactNote />
+      <section>
+        <Container className="pt-8 pb-[clamp(3.25rem,6.5vw,5.5rem)]">
+          <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(16rem,20rem)] lg:gap-8">
+            <div className="panel order-2 overflow-hidden lg:order-1">
+              <iframe
+                title={`${siteConfig.name} Google Haritalar`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(siteConfig.address.formatted)}&z=16&output=embed`}
+                className="h-72 w-full border-0 sm:h-80"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="border-t border-line p-5 sm:p-6">
+                <h2 className="font-display text-xl font-semibold">Adres</h2>
+                <address className="mt-3 not-italic text-sm leading-relaxed text-muted">
+                  {siteConfig.name}, {siteConfig.address.formattedShort}
+                </address>
+                {siteConfig.openingHours ? (
+                  <p className="mt-4 text-sm text-muted">
+                    Çalışma saatleri: {siteConfig.openingHours}
+                  </p>
+                ) : null}
+                <div className="mt-5 flex justify-center">
+                  <ExternalLinkButton
+                    href={getDirectionsUrl()}
+                    size="sm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Yol Tarifi
+                  </ExternalLinkButton>
+                </div>
+              </div>
             </div>
 
-            <div className="mt-8 rounded-lg border border-line bg-surface-elevated p-5">
-              <h2 className="font-display text-xl font-semibold">Adres</h2>
-              <address className="mt-3 not-italic text-sm leading-relaxed text-muted">
-                {siteConfig.name}
-                <br />
-                {siteConfig.address.formattedShort}
-                <br />
-                {siteConfig.address.addressCountryName}
-              </address>
-              {siteConfig.openingHours ? (
-                <p className="mt-4 text-sm text-muted">
-                  Çalışma saatleri: {siteConfig.openingHours}
-                </p>
-              ) : (
-                <p className="mt-4 text-sm text-muted">
-                  Çalışma saatleri: yapılandırma bekleniyor
-                </p>
-              )}
-              <div className="mt-4 flex flex-wrap gap-3 text-sm">
-                <a
-                  href={getMapsUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-accent underline-offset-2 hover:underline"
-                >
-                  Google Maps
-                </a>
-                <a
-                  href={getDirectionsUrl()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-accent underline-offset-2 hover:underline"
-                >
-                  Yol tarifi al
-                </a>
+            <div className="panel order-1 flex h-full flex-col p-5 sm:p-6 lg:order-2">
+              <SectionHeading
+                title="İletişim Kanalları"
+                description="Parça talepleriniz için öncelikli kanal sorgu formudur."
+              />
+              <dl className="mt-6 space-y-5">
+                {hasPhone() && telHref && phoneLabel ? (
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                      Telefon
+                    </dt>
+                    <dd className="mt-1.5">
+                      <a
+                        href={telHref}
+                        className="font-display text-lg font-semibold text-ink underline-offset-4 hover:text-accent hover:underline"
+                      >
+                        {phoneLabel}
+                      </a>
+                    </dd>
+                  </div>
+                ) : null}
+                {siteConfig.email && mailHref ? (
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                      E-posta
+                    </dt>
+                    <dd className="mt-1.5">
+                      <a
+                        href={mailHref}
+                        className="font-semibold text-ink underline-offset-4 hover:text-accent hover:underline"
+                      >
+                        {siteConfig.email}
+                      </a>
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+              <div className="mt-auto flex flex-col gap-3 pt-6">
+                <ButtonLink href="/parca-sorgula">Parça Sorgula</ButtonLink>
+                {hasWhatsApp() && whatsappHref ? (
+                  <ExternalLinkButton
+                    href={whatsappHref}
+                    variant="whatsapp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    WhatsApp&apos;tan Sor
+                  </ExternalLinkButton>
+                ) : null}
               </div>
             </div>
           </div>
-
-          <div className="overflow-hidden rounded-lg border border-line bg-white">
-            <iframe
-              title={`${siteConfig.name} Google Haritalar`}
-              src={`https://maps.google.com/maps?q=${encodeURIComponent(siteConfig.address.formatted)}&z=16&output=embed`}
-              className="h-[28rem] w-full border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </div>
-      </Section>
+        </Container>
+      </section>
     </>
   );
 }

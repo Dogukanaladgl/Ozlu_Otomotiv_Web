@@ -2,12 +2,18 @@ import {
   ButtonLink,
   ExternalLinkButton,
 } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Section";
+import { HeroShell } from "@/components/ui/HeroShell";
 import {
   getWhatsAppHref,
   hasWhatsApp,
   siteConfig,
 } from "@/config/site";
+
+const specialties = [
+  "Hyundai Yedek Parça",
+  "Kia Yedek Parça",
+  "Orijinal Çıkma Parça",
+];
 
 export function Hero() {
   const whatsappHref = getWhatsAppHref(
@@ -15,30 +21,18 @@ export function Hero() {
   );
 
   return (
-    <section className="relative overflow-hidden border-b border-line">
-      <div
-        className="absolute inset-0 bg-[linear-gradient(135deg,#142033_0%,#243447_48%,#3a2a28_100%)]"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 40%), radial-gradient(circle at 80% 0%, rgba(180,35,24,0.28), transparent 35%)",
-        }}
-        aria-hidden="true"
-      />
-      <Container className="relative py-14 sm:py-20">
-        <div className="max-w-3xl text-white">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">
-            {siteConfig.address.localityLabel}
-          </p>
-          <h1 className="mt-3 font-display text-4xl font-bold tracking-tight sm:text-5xl">
+    <HeroShell contentClassName="py-14 sm:py-16 lg:py-20">
+      <div className="grid items-stretch gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-12">
+        <div className="max-w-2xl">
+          <h1 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-[3.25rem]">
             {siteConfig.name}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/85 sm:text-xl">
+          <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+            {siteConfig.address.localityLabel}
+          </p>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
             Hyundai ve Kia için orijinal / yeni ve orijinal çıkma yedek parça.
-            İhtiyacınız olan parçayı sorun, size dönüş yapalım.
+            İhtiyacınız olan parçayı iletin; en kısa sürede tarafınıza dönüş sağlanır.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/parca-sorgula" size="lg">
@@ -55,13 +49,36 @@ export function Hero() {
                 WhatsApp&apos;tan Sor
               </ExternalLinkButton>
             ) : (
-              <ButtonLink href="/iletisim" variant="outline" size="lg" className="border-white/30 bg-white/10 text-white hover:bg-white/15">
+              <ButtonLink href="/iletisim" variant="outline" size="lg">
                 İletişime Geç
               </ButtonLink>
             )}
           </div>
         </div>
-      </Container>
-    </section>
+
+        <aside className="panel flex flex-col justify-center p-6 sm:p-7">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+            Uzmanlık alanı
+          </p>
+          <ul className="mt-5 space-y-3">
+            {specialties.map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-3 border-b border-line pb-3 text-sm font-semibold text-ink last:border-0 last:pb-0"
+              >
+                <span
+                  className="inline-flex h-2 w-2 shrink-0 rounded-full bg-accent"
+                  aria-hidden="true"
+                />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-sm leading-relaxed text-muted">
+            Selçuklu’daki fiziksel mağazamızdan hizmet veriyoruz.
+          </p>
+        </aside>
+      </div>
+    </HeroShell>
   );
 }
