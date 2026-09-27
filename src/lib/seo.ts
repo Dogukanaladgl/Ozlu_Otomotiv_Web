@@ -65,10 +65,6 @@ export function localBusinessJsonLd() {
       postalCode: siteConfig.address.postalCode,
       addressCountry: siteConfig.address.addressCountry,
     },
-    areaServed: {
-      "@type": "AdministrativeArea",
-      name: siteConfig.address.addressRegion,
-    },
   };
 
   if (siteConfig.phone) {
@@ -77,8 +73,11 @@ export function localBusinessJsonLd() {
   if (siteConfig.email) {
     data.email = siteConfig.email;
   }
-  if (siteConfig.instagramUrl) {
-    data.sameAs = [siteConfig.instagramUrl];
+  const sameAs = [siteConfig.facebookUrl, siteConfig.sahibindenUrl].filter(
+    (url): url is string => Boolean(url),
+  );
+  if (sameAs.length > 0) {
+    data.sameAs = sameAs;
   }
 
   return data;

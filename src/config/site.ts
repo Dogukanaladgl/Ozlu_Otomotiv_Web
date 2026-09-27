@@ -3,6 +3,8 @@
  * Never invent missing contact details — mark TODOs clearly.
  */
 
+import { resolveSiteUrl } from "@/lib/site-url";
+
 export type ContactValue = string | null;
 
 export const siteConfig = {
@@ -15,14 +17,11 @@ export const siteConfig = {
   language: "tr",
 
   /**
-   * Production site URL. Set NEXT_PUBLIC_SITE_URL in environment.
-   * TODO: Replace localhost default with the real production domain before launch.
+   * Public origin for canonical/sitemap/OG/JSON-LD.
+   * Production requires NEXT_PUBLIC_SITE_URL as a valid HTTPS URL (no localhost fallback).
    */
   get url() {
-    return (
-      process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-      "http://localhost:3000"
-    );
+    return resolveSiteUrl();
   },
 
   address: {
@@ -44,25 +43,23 @@ export const siteConfig = {
     },
   },
 
-  /**
-   * TODO (client): Provide verified phone in E.164 or local Turkish format, e.g. +905XXXXXXXXX
-   */
-  phone: null as ContactValue,
+  /** Display format for visitors */
+  phone: "0549 423 17 17" as ContactValue,
 
-  /**
-   * TODO (client): Provide verified WhatsApp number digits only or with +, e.g. 905XXXXXXXXX
-   */
-  whatsapp: null as ContactValue,
+  /** WhatsApp digits with country code (no leading 0) */
+  whatsapp: "905494231717" as ContactValue,
 
-  /**
-   * TODO (client): Provide verified business email
-   */
-  email: null as ContactValue,
+  email: "murat.ozlu@hotmail.com" as ContactValue,
 
   /**
    * TODO (client): Provide official Instagram profile URL
    */
-  instagramUrl: null as ContactValue,
+  instagramUrl: "" as ContactValue,
+
+  facebookUrl:
+    "https://www.facebook.com/profile.php?id=61587127391591" as ContactValue,
+
+  sahibindenUrl: "https://ozlucikma.sahibinden.com/" as ContactValue,
 
   /**
    * Exact Maps place URL preferred when available.
@@ -107,10 +104,31 @@ export function getDirectionsUrl(): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
 }
 
+/** Display as +90, then the national number starting at 5 (no trunk 0). */
+export function formatPhoneDisplay(phone: string): string {
+  let digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("90") && digits.length > 10) {
+    digits = digits.slice(2);
+  }
+  if (digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
+  if (digits.length === 10) {
+    digits = `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 8)} ${digits.slice(8)}`;
+  }
+  return `+90 ${digits}`;
+}
+
 export function getTelHref(): string | null {
   if (!siteConfig.phone) return null;
-  const digits = siteConfig.phone.replace(/[^\d+]/g, "");
-  return digits ? `tel:${digits}` : null;
+  const digits = siteConfig.phone.replace(/\D/g, "");
+  if (!digits) return null;
+  const national = digits.startsWith("90")
+    ? digits.slice(2)
+    : digits.startsWith("0")
+      ? digits.slice(1)
+      : digits;
+  return `tel:+90${national}`;
 }
 
 export function getWhatsAppHref(prefill?: string): string | null {
@@ -141,4 +159,12 @@ export function hasEmail(): boolean {
 
 export function hasInstagram(): boolean {
   return Boolean(siteConfig.instagramUrl);
+}
+
+export function hasFacebook(): boolean {
+  return Boolean(siteConfig.facebookUrl);
+}
+
+export function hasSahibinden(): boolean {
+  return Boolean(siteConfig.sahibindenUrl);
 }
