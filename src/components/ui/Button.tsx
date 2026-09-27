@@ -6,25 +6,24 @@ type Variant = "primary" | "secondary" | "whatsapp" | "ghost" | "outline";
 type Size = "md" | "sm" | "lg";
 
 const variantClasses: Record<Variant, string> = {
-  primary:
-    "bg-accent text-white hover:bg-accent-hover shadow-sm border border-transparent",
-  secondary:
-    "bg-ink text-white hover:bg-ink-soft border border-transparent",
+  primary: "bg-accent text-white border border-accent hover:bg-accent-hover",
+  secondary: "bg-ink text-white border border-ink hover:bg-ink-soft",
   whatsapp:
-    "bg-whatsapp text-white hover:bg-whatsapp-hover border border-transparent",
-  ghost: "bg-transparent text-ink hover:bg-surface border border-transparent",
+    "bg-whatsapp text-white border border-whatsapp hover:bg-whatsapp-hover",
+  ghost:
+    "bg-white text-ink border border-white/80 hover:bg-surface",
   outline:
-    "bg-surface-elevated text-ink border border-line hover:border-steel hover:bg-white",
+    "bg-white text-ink border border-line hover:border-ink/25 hover:bg-surface",
 };
 
 const sizeClasses: Record<Size, string> = {
-  sm: "min-h-10 px-3.5 text-sm",
+  sm: "min-h-10 px-4 text-sm",
   md: "min-h-11 px-5 text-sm sm:text-base",
   lg: "min-h-12 px-6 text-base",
 };
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-md font-semibold tracking-wide transition-colors disabled:opacity-60 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-[color,background-color,border-color] duration-200 disabled:pointer-events-none disabled:opacity-60";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant;

@@ -16,7 +16,7 @@ export function MobileActionBar() {
   const telHref = getTelHref();
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface-elevated/95 p-3 backdrop-blur-sm md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface-elevated/95 p-3 shadow-[0_-8px_24px_rgb(15_26_40/0.06)] backdrop-blur-md md:hidden">
       <div className="container-page flex gap-2 pb-[env(safe-area-inset-bottom)]">
         <ButtonLink href="/parca-sorgula" className="flex-1" size="md">
           Parça Sorgula

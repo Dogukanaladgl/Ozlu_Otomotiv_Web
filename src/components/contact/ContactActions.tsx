@@ -1,4 +1,5 @@
 import {
+  formatPhoneDisplay,
   getMailtoHref,
   getMapsUrl,
   getDirectionsUrl,
@@ -18,6 +19,8 @@ type ContactActionsProps = {
   compact?: boolean;
   showInquiry?: boolean;
   whatsappPrefill?: string;
+  /** Inquiry sidebar: text links for phone and mail; only directions and WhatsApp are buttons. */
+  layout?: "buttons" | "choices";
 };
 
 export function ContactActions({
@@ -25,11 +28,74 @@ export function ContactActions({
   compact = false,
   showInquiry = true,
   whatsappPrefill = "Merhaba, yedek parça hakkında bilgi almak istiyorum.",
+  layout = "buttons",
 }: ContactActionsProps) {
   const telHref = getTelHref();
+  const phoneLabel = siteConfig.phone
+    ? formatPhoneDisplay(siteConfig.phone)
+    : null;
   const mailHref = getMailtoHref();
   const whatsappHref = getWhatsAppHref(whatsappPrefill);
   const size = compact ? "sm" : "md";
+
+  if (layout === "choices") {
+    return (
+      <div className={cn("space-y-4", className)}>
+        <ul className="space-y-3 text-sm">
+          <li>
+            <span className="font-semibold text-ink">Telefon</span>
+            {hasPhone() && telHref ? (
+              <a
+                href={telHref}
+                className="mt-1 block font-semibold text-accent underline underline-offset-4 hover:text-accent-hover"
+              >
+                {phoneLabel}
+              </a>
+            ) : (
+              <span className="mt-1 block text-muted">yapılandırma bekleniyor</span>
+            )}
+          </li>
+          <li>
+            <span className="font-semibold text-ink">Mail</span>
+            {hasEmail() && mailHref ? (
+              <a
+                href={mailHref}
+                className="mt-1 block break-all font-semibold text-accent underline underline-offset-4 hover:text-accent-hover"
+              >
+                {siteConfig.email}
+              </a>
+            ) : (
+              <span className="mt-1 block text-muted">yapılandırma bekleniyor</span>
+            )}
+          </li>
+        </ul>
+        <div className="flex flex-col gap-3">
+          <ExternalLinkButton
+            href={getDirectionsUrl()}
+            variant="outline"
+            size={size}
+            className="w-full"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Yol Tarifi
+          </ExternalLinkButton>
+          {hasWhatsApp() && whatsappHref ? (
+            <ExternalLinkButton
+              href={whatsappHref}
+              variant="whatsapp"
+              size={size}
+              className="w-full"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp&apos;tan Sor
+            </ExternalLinkButton>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("flex flex-wrap gap-3", className)}>
@@ -53,7 +119,7 @@ export function ContactActions({
 
       {hasPhone() && telHref ? (
         <ExternalLinkButton href={telHref} variant="outline" size={size}>
-          Telefon
+          Telefon: {phoneLabel}
         </ExternalLinkButton>
       ) : null}
 
@@ -75,7 +141,7 @@ export function ContactActions({
 
       <ExternalLinkButton
         href={getMapsUrl()}
-        variant="ghost"
+        variant="outline"
         size={size}
         target="_blank"
         rel="noopener noreferrer"
@@ -86,7 +152,7 @@ export function ContactActions({
       {hasInstagram() ? (
         <ExternalLinkButton
           href={siteConfig.instagramUrl!}
-          variant="ghost"
+          variant="outline"
           size={size}
           target="_blank"
           rel="noopener noreferrer"
@@ -107,7 +173,7 @@ export function PendingContactNote() {
   if (missing.length === 0) return null;
 
   return (
-    <p className="rounded-md border border-line bg-surface px-3 py-2 text-sm text-muted">
+    <p className="rounded-lg border border-line bg-surface px-3.5 py-2.5 text-sm text-muted">
       Bazı iletişim kanalları henüz yapılandırılmadı ({missing.join(", ")}).
       Adres bilgisi üzerinden konum ve yol tarifi kullanılabilir.
     </p>
