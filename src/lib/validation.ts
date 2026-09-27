@@ -13,6 +13,8 @@ export type InquiryFields = {
   website: string;
 };
 
+export const partDescriptionMaxLength = 500;
+
 export type FieldErrors = Partial<
   Record<keyof InquiryFields | "image", string>
 >;
@@ -63,6 +65,15 @@ function normalizePhone(value: string): string {
   return value.replace(/[\s()-]/g, "");
 }
 
+/** Uppercase alphanumeric VIN/chassis; strips spaces, hyphens and similar separators. */
+export function normalizeVin(value: string): string {
+  return value
+    .trim()
+    .toUpperCase()
+    .replace(/[\s\-_.]/g, "")
+    .replace(/[^A-Z0-9]/g, "");
+}
+
 function isValidTurkishPhone(value: string): boolean {
   const cleaned = normalizePhone(value);
   // Accept +90XXXXXXXXXX, 90XXXXXXXXXX, 0XXXXXXXXXX, or 5XXXXXXXXX
@@ -77,7 +88,7 @@ export function validateInquiryFields(
   const website = trim(input.website);
   const brand = trim(input.brand);
   const model = trim(input.model);
-  const vin = trim(input.vin);
+  const vinRaw = trim(input.vin);
   const part = trim(input.part);
   const phone = trim(input.phone);
 
@@ -90,38 +101,45 @@ export function validateInquiryFields(
   }
 
   if (!brand) {
-    errors.brand = "Lütfen araç markasını seçin.";
+    errors.brand = "Bu alanın doldurulması zorunludur.";
   } else if (!BRANDS.has(brand)) {
     errors.brand = "Şu an yalnızca Hyundai veya Kia için sorgu kabul ediyoruz.";
   }
 
   if (!model) {
-    errors.model = "Lütfen araç modelini yazın.";
+    errors.model = "Bu alanın doldurulması zorunludur.";
   } else if (model.length < 2) {
     errors.model = "Model adı en az 2 karakter olmalıdır.";
   } else if (model.length > 80) {
     errors.model = "Model adı en fazla 80 karakter olabilir.";
   }
 
-  if (!vin) {
-    errors.vin = "Lütfen şasi / VIN numarasını yazın.";
-  } else if (vin.length < 5) {
-    errors.vin =
-      "Şasi / VIN numarası en az 5 karakter olmalıdır. Araç ruhsatınızdan kontrol edebilirsiniz.";
-  } else if (vin.length > 32) {
-    errors.vin = "Şasi / VIN numarası en fazla 32 karakter olabilir.";
+  let normalizedVin = "";
+  if (!vinRaw) {
+    errors.vin = "Bu alanın doldurulması zorunludur.";
+  } else {
+    normalizedVin = normalizeVin(vinRaw);
+    if (normalizedVin.length < 5) {
+      errors.vin =
+        "Şasi / VIN numarası en az 5 karakter olmalıdır. Araç ruhsatınızdan kontrol edebilirsiniz.";
+    } else if (normalizedVin.length > 32) {
+      errors.vin = "Şasi / VIN numarası en fazla 32 karakter olabilir.";
+    } else if (!/^[A-Z0-9]+$/.test(normalizedVin)) {
+      errors.vin =
+        "Şasi / VIN yalnızca harf ve rakam içermelidir (boşluk ve tire otomatik temizlenir).";
+    }
   }
 
   if (!part) {
-    errors.part = "Lütfen istediğiniz parçayı yazın.";
+    errors.part = "Bu alanın doldurulması zorunludur.";
   } else if (part.length < 2) {
     errors.part = "Parça açıklaması en az 2 karakter olmalıdır.";
-  } else if (part.length > 500) {
-    errors.part = "Parça açıklaması en fazla 500 karakter olabilir.";
+  } else if (part.length > partDescriptionMaxLength) {
+    errors.part = `Parça açıklaması en fazla ${partDescriptionMaxLength} karakter olabilir.`;
   }
 
   if (!phone) {
-    errors.phone = "Lütfen telefon numaranızı yazın.";
+    errors.phone = "Bu alanın doldurulması zorunludur.";
   } else if (!isValidTurkishPhone(phone)) {
     errors.phone =
       "Lütfen geçerli bir telefon numarası girin (ör. 05XX XXX XX XX).";
@@ -136,7 +154,7 @@ export function validateInquiryFields(
     data: {
       brand,
       model,
-      vin,
+      vin: normalizedVin,
       part,
       phone: normalizePhone(phone),
       website: "",

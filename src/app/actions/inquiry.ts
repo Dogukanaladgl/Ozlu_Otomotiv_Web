@@ -1,6 +1,11 @@
 "use server";
 
+import { headers } from "next/headers";
 import { sendInquiryEmail } from "@/lib/email";
+import {
+  checkInquiryRateLimit,
+  validateFormTiming,
+} from "@/lib/rate-limit";
 import {
   validateInquiryFields,
   validateInquiryImage,
@@ -12,6 +17,8 @@ export type InquiryActionState = {
   message?: string;
   errors?: FieldErrors;
 };
+
+const SUCCESS_MESSAGE = "Sorgunuz alındı ve işletmeye iletildi.";
 
 export async function submitInquiry(
   _prev: InquiryActionState,
@@ -30,8 +37,26 @@ export async function submitInquiry(
   if (!fieldsResult.ok && fieldsResult.errors.website) {
     return {
       status: "success",
+      message: SUCCESS_MESSAGE,
+    };
+  }
+
+  // Anti-bot: reject instant / missing timing token (keep message generic)
+  if (!validateFormTiming(formData.get("formStartedAt"))) {
+    return {
+      status: "error",
       message:
-        "Sorgunuz alındı. En kısa sürede sizinle iletişime geçeceğiz.",
+        "Sorgunuz şu anda gönderilemedi. Lütfen formu yenileyip tekrar deneyin.",
+    };
+  }
+
+  const clientKey = await getClientRateLimitKey();
+  const rate = checkInquiryRateLimit(clientKey);
+  if (!rate.ok) {
+    return {
+      status: "error",
+      message:
+        "Çok fazla sorgu gönderildi. Lütfen bir süre sonra tekrar deneyin.",
     };
   }
 
@@ -72,8 +97,7 @@ export async function submitInquiry(
 
     return {
       status: "success",
-      message:
-        "Sorgunuz alındı. En kısa sürede sizinle iletişime geçeceğiz.",
+      message: SUCCESS_MESSAGE,
     };
   } catch (error) {
     console.error("Inquiry delivery failed:", error);
@@ -83,6 +107,16 @@ export async function submitInquiry(
         "Sorgunuz şu anda gönderilemedi. Lütfen daha sonra tekrar deneyin veya iletişim sayfasındaki diğer kanalları kullanın.",
     };
   }
+}
+
+async function getClientRateLimitKey(): Promise<string> {
+  const h = await headers();
+  const forwarded = h.get("x-forwarded-for");
+  const ip =
+    forwarded?.split(",")[0]?.trim() ||
+    h.get("x-real-ip")?.trim() ||
+    "unknown";
+  return `inquiry:${ip}`;
 }
 
 function sanitizeFilename(name: string): string {

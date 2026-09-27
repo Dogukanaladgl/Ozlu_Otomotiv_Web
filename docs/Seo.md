@@ -192,7 +192,7 @@ The page should clearly explain:
 - What information is needed.
 - Why relevant vehicle information is requested.
 - How the user submits the request.
-- What happens after submission, without promising unverified response times.
+- What happens after submission. A general follow-up (“en kısa sürede”) may be stated; do not invent a specific response-time number.
 
 ---
 
