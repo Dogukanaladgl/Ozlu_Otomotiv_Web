@@ -43,11 +43,13 @@ export const siteConfig = {
     },
   },
 
-  /** Display format for visitors */
-  phone: "0549 423 17 17" as ContactValue,
+  /** Display format for visitors. First number is shown first everywhere. */
+  phone: "0532 360 7958" as ContactValue,
 
-  /** WhatsApp digits with country code (no leading 0) */
-  whatsapp: "905494231717" as ContactValue,
+  phones: ["0532 360 7958", "0549 423 17 17"] as const,
+
+  /** WhatsApp digits with country code (no leading 0). Uses 0532 360 7958. */
+  whatsapp: "905323607958" as ContactValue,
 
   email: "murat.ozlu@hotmail.com" as ContactValue,
 
@@ -119,9 +121,8 @@ export function formatPhoneDisplay(phone: string): string {
   return `+90 ${digits}`;
 }
 
-export function getTelHref(): string | null {
-  if (!siteConfig.phone) return null;
-  const digits = siteConfig.phone.replace(/\D/g, "");
+export function toTelHref(phone: string): string | null {
+  const digits = phone.replace(/\D/g, "");
   if (!digits) return null;
   const national = digits.startsWith("90")
     ? digits.slice(2)
@@ -129,6 +130,18 @@ export function getTelHref(): string | null {
       ? digits.slice(1)
       : digits;
   return `tel:+90${national}`;
+}
+
+export function getBusinessPhones(): Array<{ display: string; href: string }> {
+  return siteConfig.phones.flatMap((phone) => {
+    const href = toTelHref(phone);
+    if (!href) return [];
+    return [{ display: formatPhoneDisplay(phone), href }];
+  });
+}
+
+export function getTelHref(): string | null {
+  return getBusinessPhones()[0]?.href ?? null;
 }
 
 export function getWhatsAppHref(prefill?: string): string | null {
@@ -146,7 +159,7 @@ export function getMailtoHref(): string | null {
 }
 
 export function hasPhone(): boolean {
-  return Boolean(siteConfig.phone);
+  return getBusinessPhones().length > 0;
 }
 
 export function hasWhatsApp(): boolean {

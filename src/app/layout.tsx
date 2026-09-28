@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Barlow, Source_Sans_3 } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { siteConfig } from "@/config/site";
 import { localBusinessJsonLd } from "@/lib/seo";
@@ -56,11 +55,10 @@ export default function RootLayout({
           İçeriğe atla
         </a>
         <Header />
-        <main id="main-content" className="flex-1 pb-24 md:pb-0">
+        <main id="main-content" className="flex-1">
           {children}
         </main>
         <Footer />
-        <MobileActionBar />
       </body>
     </html>
   );

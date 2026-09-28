@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/config/site";
+import { getBusinessPhones, siteConfig } from "@/config/site";
 
 type PageMetaInput = {
   title: string;
@@ -67,8 +67,9 @@ export function localBusinessJsonLd() {
     },
   };
 
-  if (siteConfig.phone) {
-    data.telephone = siteConfig.phone;
+  const telephones = getBusinessPhones().map((phone) => phone.display);
+  if (telephones.length > 0) {
+    data.telephone = telephones.length === 1 ? telephones[0] : telephones;
   }
   if (siteConfig.email) {
     data.email = siteConfig.email;

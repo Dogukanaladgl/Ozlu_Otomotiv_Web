@@ -64,7 +64,7 @@ export function Header() {
             {siteConfig.name}
           </span>
           <span className="truncate text-[0.7rem] font-medium uppercase tracking-[0.12em] text-muted">
-            Hyundai &amp; Kia · {siteConfig.address.localityLabel}
+            Hyundai - Kia · {siteConfig.address.localityLabel}
           </span>
         </Link>
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { footerNav } from "@/config/navigation";
 import {
-  formatPhoneDisplay,
+  getBusinessPhones,
   getMailtoHref,
   hasEmail,
   hasPhone,
@@ -11,9 +11,7 @@ import { SocialExpandLinks } from "@/components/layout/SocialExpandLinks";
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const phoneDisplay = siteConfig.phone
-    ? formatPhoneDisplay(siteConfig.phone)
-    : null;
+  const phones = getBusinessPhones();
   const mailHref = getMailtoHref();
 
   return (
@@ -63,12 +61,19 @@ export function Footer() {
             İletişim
           </p>
           <div className="mt-4 space-y-3 text-sm text-white/85">
-            {hasPhone() && phoneDisplay ? (
-              <p>
-                Telefon:{" "}
-                <span className="font-semibold text-white">{phoneDisplay}</span>
-              </p>
-            ) : null}
+            {hasPhone()
+              ? phones.map((phone) => (
+                  <p key={phone.href}>
+                    Telefon:{" "}
+                    <a
+                      href={phone.href}
+                      className="font-semibold text-white underline-offset-4 hover:underline"
+                    >
+                      {phone.display}
+                    </a>
+                  </p>
+                ))
+              : null}
             {hasEmail() && mailHref && siteConfig.email ? (
               <p>
                 Mail:{" "}

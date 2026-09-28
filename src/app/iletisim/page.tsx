@@ -3,10 +3,9 @@ import { PageHero } from "@/components/ui/PageHero";
 import { Container, SectionHeading } from "@/components/ui/Section";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
-  formatPhoneDisplay,
+  getBusinessPhones,
   getDirectionsUrl,
   getMailtoHref,
-  getTelHref,
   getWhatsAppHref,
   hasPhone,
   hasWhatsApp,
@@ -23,10 +22,7 @@ export const metadata = createPageMetadata({
 
 export default function ContactPage() {
   const mailHref = getMailtoHref();
-  const telHref = getTelHref();
-  const phoneLabel = siteConfig.phone
-    ? formatPhoneDisplay(siteConfig.phone)
-    : null;
+  const phones = getBusinessPhones();
   const whatsappHref = getWhatsAppHref(
     "Merhaba, yedek parça hakkında bilgi almak istiyorum.",
   );
@@ -86,18 +82,21 @@ export default function ContactPage() {
                 description="Parça talepleriniz için öncelikli kanal sorgu formudur."
               />
               <dl className="mt-6 space-y-5">
-                {hasPhone() && telHref && phoneLabel ? (
+                {hasPhone() ? (
                   <div>
                     <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
                       Telefon
                     </dt>
-                    <dd className="mt-1.5">
-                      <a
-                        href={telHref}
-                        className="font-display text-lg font-semibold text-ink underline-offset-4 hover:text-accent hover:underline"
-                      >
-                        {phoneLabel}
-                      </a>
+                    <dd className="mt-1.5 space-y-1">
+                      {phones.map((phone) => (
+                        <a
+                          key={phone.href}
+                          href={phone.href}
+                          className="block font-display text-lg font-semibold text-ink underline-offset-4 hover:text-accent hover:underline"
+                        >
+                          {phone.display}
+                        </a>
+                      ))}
                     </dd>
                   </div>
                 ) : null}

@@ -100,7 +100,7 @@ Provide:
 The hero should communicate:
 
 - Özlü Otomotiv
-- Hyundai & Kia
+- Hyundai - Kia
 - Spare parts
 - Original/new and original used parts
 - Konya / Selçuklu

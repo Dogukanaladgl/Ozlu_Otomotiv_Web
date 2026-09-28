@@ -1,19 +1,22 @@
 import type { StaticImageData } from "next/image";
-import akuTablasi from "@/assets/parts/aku-tablasi-37150-c7000.jpg";
-import arkaKapiKilidi from "@/assets/parts/arka-kapi-kilidi-81420-2l000.jpg";
-import aynaUcgenKapagi from "@/assets/parts/ayna-ucgen-kapagi-86190-a5100.jpg";
-import bagajKilidi from "@/assets/parts/bagaj-kilidi-81230-d3000.jpg";
-import camAltiDavlumbaz from "@/assets/parts/cam-alti-davlumbaz.jpg";
-import camurlukDavlumbazi from "@/assets/parts/camurluk-davlumbazi.jpg";
-import devirdaimPompasi from "@/assets/parts/devirdaim-pompasi-25100-07501.jpg";
-import elFreniDugmePaneli from "@/assets/parts/el-freni-dugme-paneli-93300-d30304x.jpg";
-import fanDavlumbazi from "@/assets/parts/fan-davlumbazi-25350-q0300.jpg";
-import hizSensoru from "@/assets/parts/hiz-sensoru-96420-4a600.jpg";
-import kaplamaParcasi1 from "@/assets/parts/kaplama-parcasi-1.jpg";
-import kaplamaParcasi2 from "@/assets/parts/kaplama-parcasi-2.jpg";
-import plakaLambasi from "@/assets/parts/plaka-lambasi-92501-1j000.jpg";
-import sigortaKutusuKapagi from "@/assets/parts/sigorta-kutusu-kapagi-91213-25401.jpg";
-import yedekSuDeposu from "@/assets/parts/yedek-su-deposu-25431-25100.jpg";
+import akuTablasi from "@/assets/parts/aku-tablasi-37150-c7000.webp";
+import bagajKilidi from "@/assets/parts/bagaj-kilidi.webp";
+import beyazPlastikKapak from "@/assets/parts/beyaz-plastik-kapak.webp";
+import davlumbazParcasi from "@/assets/parts/davlumbaz-parcasi.webp";
+import devirdaimPompasi from "@/assets/parts/devirdaim-pompasi.webp";
+import elFreniDugmePaneli from "@/assets/parts/el-freni-dugme-paneli.webp";
+import fanDavlumbazi from "@/assets/parts/fan-davlumbazi.webp";
+import havaFiltresiKutusu from "@/assets/parts/hava-filtresi-kutusu.webp";
+import hizSensoru from "@/assets/parts/hiz-sensoru.webp";
+import icPanelParcasi from "@/assets/parts/ic-panel-parcasi.webp";
+import kapiKilitMekanizmasi from "@/assets/parts/kapi-kilit-mekanizmasi.webp";
+import plakaLambasi from "@/assets/parts/plaka-lambasi.webp";
+import plastikBaglantiParcasi from "@/assets/parts/plastik-baglanti-parcasi.webp";
+import plastikKapak from "@/assets/parts/plastik-kapak.webp";
+import plastikKaplama from "@/assets/parts/plastik-kaplama.webp";
+import sigortaKutusuKapagi from "@/assets/parts/sigorta-kutusu-kapagi-91213-25401.webp";
+import surusModuDugmePaneli from "@/assets/parts/surus-modu-dugme-paneli.webp";
+import ucgenKaplama from "@/assets/parts/ucgen-kaplama.webp";
 
 export type PartPhoto = {
   image: StaticImageData;
@@ -25,45 +28,35 @@ export const featuredPartPhotos: PartPhoto[] = [
   {
     image: elFreniDugmePaneli,
     name: "El Freni Ve Sürüş Modu Düğme Paneli",
-    partNumber: "93300-D30304X",
   },
+  { image: devirdaimPompasi, name: "Devirdaim Pompası" },
+  { image: bagajKilidi, name: "Bagaj Kilidi" },
+  { image: kapiKilitMekanizmasi, name: "Kapı Kilit Mekanizması" },
+  { image: fanDavlumbazi, name: "Fan Davlumbazı" },
   {
-    image: devirdaimPompasi,
-    name: "Devirdaim Pompası",
-    partNumber: "25100-07501",
+    image: akuTablasi,
+    name: "Akü Tablası",
+    partNumber: "37150-C7000",
   },
-  { image: bagajKilidi, name: "Bagaj Kilidi", partNumber: "81230-D3000" },
-  {
-    image: arkaKapiKilidi,
-    name: "Arka Kapı Kilit Mekanizması",
-    partNumber: "81420-2L000",
-  },
-  { image: fanDavlumbazi, name: "Fan Davlumbazı", partNumber: "25350-Q0300" },
-  { image: akuTablasi, name: "Akü Tablası", partNumber: "37150-C7000" },
 ];
 
 export const filmstripPartPhotos: PartPhoto[] = [
-  { image: hizSensoru, name: "Hız Sensörü", partNumber: "96420-4A600" },
-  {
-    image: aynaUcgenKapagi,
-    name: "Ayna Üçgen Kapağı",
-    partNumber: "86190-A5100",
-  },
+  { image: havaFiltresiKutusu, name: "Hava Filtresi Kutusu" },
+  { image: plakaLambasi, name: "Plaka Lambası" },
+  { image: hizSensoru, name: "Hız Sensörü" },
   {
     image: sigortaKutusuKapagi,
     name: "Sigorta Kutusu Kapağı",
     partNumber: "91213-25401",
   },
-  { image: camurlukDavlumbazi, name: "Çamurluk Davlumbazı" },
-  { image: plakaLambasi, name: "Plaka Lambası", partNumber: "92501-1J000" },
-  { image: kaplamaParcasi1, name: "Plastik Kaplama Parçası" },
-  {
-    image: yedekSuDeposu,
-    name: "Radyatör Yedek Su Deposu",
-    partNumber: "25431-25100",
-  },
-  { image: camAltiDavlumbaz, name: "Ön Cam Altı Davlumbaz Parçası" },
-  { image: kaplamaParcasi2, name: "Plastik Kaplama Parçası" },
+  { image: surusModuDugmePaneli, name: "Sürüş Modu Düğme Paneli" },
+  { image: ucgenKaplama, name: "Üçgen Kaplama Parçası" },
+  { image: icPanelParcasi, name: "İç Panel Parçası" },
+  { image: davlumbazParcasi, name: "Davlumbaz Parçası" },
+  { image: plastikKaplama, name: "Plastik Kaplama Parçası" },
+  { image: plastikKapak, name: "Plastik Kapak" },
+  { image: beyazPlastikKapak, name: "Beyaz Plastik Kapak" },
+  { image: plastikBaglantiParcasi, name: "Plastik Bağlantı Parçası" },
 ];
 
 export function getPartPhotoAlt(photo: PartPhoto) {

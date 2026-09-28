@@ -192,54 +192,16 @@
     background: transparent;
   }
 
-  .filmstrip {
-    overflow: hidden;
-    padding-block: 0.5rem 1.5rem;
-    mask-image: linear-gradient(
-      to right,
-      transparent,
-      #000 4%,
-      #000 96%,
-      transparent
-    );
+  .scrollbar-hidden {
+    scrollbar-width: none;
   }
 
-  .filmstrip__track {
-    display: flex;
-    width: max-content;
-    animation: filmstrip-scroll var(--filmstrip-duration, 60s) linear infinite;
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
   }
 
-  .filmstrip--reverse .filmstrip__track {
-    animation-direction: reverse;
-  }
-
-  .filmstrip:hover .filmstrip__track,
-  .filmstrip:focus-visible .filmstrip__track,
-  .filmstrip[data-paused] .filmstrip__track {
-    animation-play-state: paused;
-  }
-
-  @keyframes filmstrip-scroll {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .filmstrip {
-      overflow-x: auto;
-      mask-image: none;
-    }
-
-    .filmstrip__track {
-      animation: none;
-      padding-inline: 1rem;
-    }
-
-    .filmstrip__clone {
-      display: none;
-    }
+  .part-viewer::backdrop {
+    background: rgb(15 26 40 / 0.72);
   }
 
   /* Expandable social links (header). Hover/focus only — keyboard accessible. */

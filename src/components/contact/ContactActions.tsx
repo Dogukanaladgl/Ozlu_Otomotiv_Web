@@ -1,9 +1,8 @@
 import {
-  formatPhoneDisplay,
+  getBusinessPhones,
   getMailtoHref,
   getMapsUrl,
   getDirectionsUrl,
-  getTelHref,
   getWhatsAppHref,
   hasEmail,
   hasInstagram,
@@ -30,10 +29,7 @@ export function ContactActions({
   whatsappPrefill = "Merhaba, yedek parça hakkında bilgi almak istiyorum.",
   layout = "buttons",
 }: ContactActionsProps) {
-  const telHref = getTelHref();
-  const phoneLabel = siteConfig.phone
-    ? formatPhoneDisplay(siteConfig.phone)
-    : null;
+  const phones = getBusinessPhones();
   const mailHref = getMailtoHref();
   const whatsappHref = getWhatsAppHref(whatsappPrefill);
   const size = compact ? "sm" : "md";
@@ -44,13 +40,16 @@ export function ContactActions({
         <ul className="space-y-3 text-sm">
           <li>
             <span className="font-semibold text-ink">Telefon</span>
-            {hasPhone() && telHref ? (
-              <a
-                href={telHref}
-                className="mt-1 block font-semibold text-accent underline underline-offset-4 hover:text-accent-hover"
-              >
-                {phoneLabel}
-              </a>
+            {hasPhone() ? (
+              phones.map((phone) => (
+                <a
+                  key={phone.href}
+                  href={phone.href}
+                  className="mt-1 block font-semibold text-accent underline underline-offset-4 hover:text-accent-hover"
+                >
+                  {phone.display}
+                </a>
+              ))
             ) : (
               <span className="mt-1 block text-muted">yapılandırma bekleniyor</span>
             )}
@@ -117,11 +116,16 @@ export function ContactActions({
         </ExternalLinkButton>
       ) : null}
 
-      {hasPhone() && telHref ? (
-        <ExternalLinkButton href={telHref} variant="outline" size={size}>
-          Telefon: {phoneLabel}
+      {phones.map((phone) => (
+        <ExternalLinkButton
+          key={phone.href}
+          href={phone.href}
+          variant="outline"
+          size={size}
+        >
+          Telefon: {phone.display}
         </ExternalLinkButton>
-      ) : null}
+      ))}
 
       {hasEmail() && mailHref ? (
         <ExternalLinkButton href={mailHref} variant="outline" size={size}>
