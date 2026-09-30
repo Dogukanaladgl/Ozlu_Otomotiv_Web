@@ -10,12 +10,22 @@ export function AboutPreview() {
           <SectionHeading
             eyebrow="Hakkımızda"
             title={`${siteConfig.name} — Selçuklu’da Hyundai Ve Kia Odağı`}
-            description={`${siteConfig.name}, ${siteConfig.address.localityLabel} adresinde Hyundai ve Kia yedek parça alanında faaliyet gösterir. Orijinal / yeni ve orijinal çıkma parçalar için müşterilerimizin taleplerini alırız.`}
+            description={`${siteConfig.name}, ${siteConfig.address.localityLabel} adresinde Hyundai ve Kia yedek parça alanında faaliyet gösterir. Orijinal sıfır ve orijinal çıkma parçalar için müşterilerimizin taleplerini alırız.`}
           />
-          <p className="mt-4 text-sm leading-relaxed text-muted">
-            Amacımız, ihtiyacınız olan parçayı doğru araç bilgisiyle
-            değerlendirebilmek ve en kısa sürede tarafınıza net bir dönüş sağlayabilmektir.
-          </p>
+          <div className="mt-4 max-w-2xl space-y-3 text-sm leading-relaxed text-muted">
+            <p>
+              Çalışma alanımızı yalnızca Hyundai ve Kia markalarıyla sınırlı
+              tutuyoruz. Konya’da Hyundai yedek parça veya Kia yedek parça
+              arayan araç sahiplerinin taleplerini; aracın modeli, şasi (VIN)
+              numarası ve istenen parçanın tarifiyle birlikte değerlendiriyoruz.
+            </p>
+            <p>
+              Aynı model adını taşıyan araçlarda bile donanım veya üretim
+              dönemine göre parça kodları değişebilir. Bu yüzden amacımız,
+              ihtiyacınız olan parçayı doğru araç bilgisiyle eşleştirmek ve en
+              kısa sürede tarafınıza net bir dönüş sağlamaktır.
+            </p>
+          </div>
           <div className="mt-6">
             <ButtonLink href="/hakkimizda" variant="outline">
               Daha fazla bilgi
