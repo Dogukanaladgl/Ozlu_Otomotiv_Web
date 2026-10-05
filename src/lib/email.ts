@@ -12,7 +12,7 @@ export type InquiryEmailPayload = {
 };
 
 /** Verified Resend domain sender. Used when RESEND_FROM_EMAIL is empty or still the test address. */
-const DEFAULT_FROM = "Özlü Otomotiv <bildirim@ozluotomotiv.com>";
+const DEFAULT_FROM = "Özlü Otomotiv <form@ozluotomotiv.com>";
 
 function getResendClient() {
   const apiKey = process.env.RESEND_API_KEY?.trim();
