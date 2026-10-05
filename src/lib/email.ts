@@ -11,12 +11,30 @@ export type InquiryEmailPayload = {
   } | null;
 };
 
+/** Verified Resend domain sender. Used when RESEND_FROM_EMAIL is empty or still the test address. */
+const DEFAULT_FROM = "Özlü Otomotiv <bildirim@ozluotomotiv.com>";
+
 function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY?.trim();
   if (!apiKey) {
     throw new Error("RESEND_API_KEY is not configured");
   }
   return new Resend(apiKey);
+}
+
+function resolveFromAddress(): string {
+  const configured = process.env.RESEND_FROM_EMAIL?.trim();
+  if (!configured || /onboarding@resend\.dev/i.test(configured)) {
+    return DEFAULT_FROM;
+  }
+  return configured;
+}
+
+function resolveRecipient(): string {
+  const configured = process.env.CONTACT_RECIPIENT_EMAIL?.trim();
+  if (configured) return configured;
+  if (siteConfig.email) return siteConfig.email;
+  throw new Error("CONTACT_RECIPIENT_EMAIL is not configured");
 }
 
 function escapeHtml(value: string): string {
@@ -31,15 +49,8 @@ function escapeHtml(value: string): string {
 export async function sendInquiryEmail(
   payload: InquiryEmailPayload,
 ): Promise<{ id: string }> {
-  const from = process.env.RESEND_FROM_EMAIL;
-  const to = process.env.CONTACT_RECIPIENT_EMAIL;
-
-  if (!from) {
-    throw new Error("RESEND_FROM_EMAIL is not configured");
-  }
-  if (!to) {
-    throw new Error("CONTACT_RECIPIENT_EMAIL is not configured");
-  }
+  const from = resolveFromAddress();
+  const to = resolveRecipient();
 
   const resend = getResendClient();
   const subject = `Parça sorgusu — ${payload.fields.brand} ${payload.fields.model}`;
@@ -80,7 +91,8 @@ export async function sendInquiryEmail(
     ? [
         {
           filename: payload.image.filename,
-          content: payload.image.content,
+          // Resend JSON-encodes the payload; Buffer becomes an object and is rejected.
+          content: payload.image.content.toString("base64"),
           contentType: payload.image.mime,
         },
       ]

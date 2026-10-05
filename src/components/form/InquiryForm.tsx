@@ -27,22 +27,30 @@ const maxMb = Math.round(siteConfig.inquiry.maxImageBytes / (1024 * 1024));
 type AcceptedImageType =
   (typeof siteConfig.inquiry.acceptedImageTypes)[number];
 
+type FormNotice =
+  | { kind: "success" }
+  | { kind: "error"; message?: string };
+
 export function InquiryForm() {
   const [instance, setInstance] = useState(0);
-  const [notice, setNotice] = useState<"success" | "error" | null>(null);
+  const [notice, setNotice] = useState<FormNotice | null>(null);
 
   return (
     <>
       <InquiryFormFields
         key={instance}
         onSuccess={() => {
-          setNotice("success");
+          setNotice({ kind: "success" });
           setInstance((value) => value + 1);
         }}
-        onSendError={() => setNotice("error")}
+        onSendError={(message) => setNotice({ kind: "error", message })}
       />
       {notice ? (
-        <ResultDialog kind={notice} onClose={() => setNotice(null)} />
+        <ResultDialog
+          kind={notice.kind}
+          message={notice.kind === "error" ? notice.message : undefined}
+          onClose={() => setNotice(null)}
+        />
       ) : null}
     </>
   );
@@ -53,7 +61,7 @@ function InquiryFormFields({
   onSendError,
 }: {
   onSuccess: () => void;
-  onSendError: () => void;
+  onSendError: (message?: string) => void;
 }) {
   const [state, setState] = useState<InquiryActionState>(initialState);
   const [pending, setPending] = useState(false);
@@ -159,14 +167,14 @@ function InquiryFormFields({
       if (image instanceof File && image.size > 0) {
         formData.set("image", await compressImage(image));
       }
-      const result = await submitInquiry(state, formData);
+      const result = await submitInquiry(formData);
       setState(result);
       if (result.status === "success") {
         onSuccess();
         return;
       }
       if (result.status === "error") {
-        onSendError();
+        onSendError(result.message);
       }
     } catch {
       onSendError();
@@ -503,9 +511,11 @@ function inputClass(hasError: boolean) {
 
 function ResultDialog({
   kind,
+  message,
   onClose,
 }: {
   kind: "success" | "error";
+  message?: string;
   onClose: () => void;
 }) {
   const titleId = useId();
@@ -582,7 +592,7 @@ function ResultDialog({
         </h2>
         {success ? null : (
           <p className="mt-2 text-sm leading-relaxed text-muted">
-            Lütfen formu tekrar göndermeyi deneyin.
+            {message ?? "Lütfen formu tekrar göndermeyi deneyin."}
           </p>
         )}
         <Button

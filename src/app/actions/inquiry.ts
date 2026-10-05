@@ -19,11 +19,33 @@ export type InquiryActionState = {
 };
 
 const SUCCESS_MESSAGE = "Sorgunuz alındı ve işletmeye iletildi.";
+const GENERIC_DELIVERY_ERROR =
+  "Sorgunuz şu anda gönderilemedi. Lütfen daha sonra tekrar deneyin veya iletişim sayfasındaki diğer kanalları kullanın.";
 
 export async function submitInquiry(
-  _prev: InquiryActionState,
   formData: FormData,
 ): Promise<InquiryActionState> {
+  try {
+    return await processInquiry(formData);
+  } catch (error) {
+    console.error("Inquiry delivery failed:", error);
+    return {
+      status: "error",
+      message: publicDeliveryError(error),
+    };
+  }
+}
+
+async function processInquiry(
+  formData: FormData,
+): Promise<InquiryActionState> {
+  if (!(formData instanceof FormData)) {
+    return {
+      status: "error",
+      message: GENERIC_DELIVERY_ERROR,
+    };
+  }
+
   const fieldsResult = validateInquiryFields({
     brand: formData.get("brand"),
     model: formData.get("model"),
@@ -50,16 +72,6 @@ export async function submitInquiry(
     };
   }
 
-  const clientKey = await getClientRateLimitKey();
-  const rate = checkInquiryRateLimit(clientKey);
-  if (!rate.ok) {
-    return {
-      status: "error",
-      message:
-        "Çok fazla sorgu gönderildi. Lütfen bir süre sonra tekrar deneyin.",
-    };
-  }
-
   const imageEntry = formData.get("image");
   const imageFile =
     imageEntry instanceof File && imageEntry.size > 0 ? imageEntry : null;
@@ -80,33 +92,46 @@ export async function submitInquiry(
     };
   }
 
-  try {
-    const imageAttachment =
-      imageResult.file && "buffer" in imageResult
-        ? {
-            filename: sanitizeFilename(imageResult.file.name),
-            content: imageResult.buffer,
-            mime: imageResult.mime,
-          }
-        : null;
-
-    await sendInquiryEmail({
-      fields: fieldsResult.data,
-      image: imageAttachment,
-    });
-
-    return {
-      status: "success",
-      message: SUCCESS_MESSAGE,
-    };
-  } catch (error) {
-    console.error("Inquiry delivery failed:", error);
+  const clientKey = await getClientRateLimitKey();
+  const rate = checkInquiryRateLimit(clientKey);
+  if (!rate.ok) {
     return {
       status: "error",
       message:
-        "Sorgunuz şu anda gönderilemedi. Lütfen daha sonra tekrar deneyin veya iletişim sayfasındaki diğer kanalları kullanın.",
+        "Çok fazla sorgu gönderildi. Lütfen bir süre sonra tekrar deneyin.",
     };
   }
+
+  const imageAttachment =
+    imageResult.file && "buffer" in imageResult
+      ? {
+          filename: sanitizeFilename(imageResult.file.name),
+          content: imageResult.buffer,
+          mime: imageResult.mime,
+        }
+      : null;
+
+  await sendInquiryEmail({
+    fields: fieldsResult.data,
+    image: imageAttachment,
+  });
+
+  return {
+    status: "success",
+    message: SUCCESS_MESSAGE,
+  };
+}
+
+function publicDeliveryError(error: unknown): string {
+  if (
+    process.env.NODE_ENV !== "production" &&
+    error instanceof Error &&
+    /RESEND_|CONTACT_RECIPIENT|not configured/i.test(error.message)
+  ) {
+    return "E-posta gönderimi yapılandırılmamış. .env.local dosyasına RESEND_API_KEY ekleyip geliştirme sunucusunu yeniden başlatın.";
+  }
+
+  return GENERIC_DELIVERY_ERROR;
 }
 
 async function getClientRateLimitKey(): Promise<string> {

@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
     serverActions: {
       // Vercel rejects request bodies above 4.5 MB.
       bodySizeLimit: "4mb",
+      allowedOrigins: [
+        "www.ozluotomotiv.com",
+        "ozluotomotiv.com",
+        "ozlu-otomotiv-web.vercel.app",
+      ],
     },
   },
 };
