@@ -67,9 +67,9 @@ export const siteConfig = {
    * Official Google Maps place/share URL from Google Business Profile.
    * When set, JSON-LD includes `hasMap` and map CTAs use this URL.
    * How to get it: docs/SEARCH-CONSOLE.md → “Resmi Maps yer linki”.
-   * TODO (client): Paste the GBP Share link here (maps.app.goo.gl or maps/place).
    */
-  googleMapsUrl: null as ContactValue,
+  googleMapsUrl:
+    "https://maps.app.goo.gl/Le8yQASMLKTYdnE98" as ContactValue,
 
   /** Verified from the Google Business listing. Days without hours are closed. */
   openingHours: [

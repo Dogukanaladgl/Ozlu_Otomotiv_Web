@@ -89,7 +89,8 @@ Kaynak gerçek: `src/config/site.ts` ve canlı `/iletisim` sayfası.
 
 1. Google Maps veya GBP → işletme → **Paylaş** → yer linkini kopyalayın  
    (tercihen `maps.app.goo.gl/…` veya `google.com/maps/place/…`)
-2. `src/config/site.ts` içinde `googleMapsUrl` alanına yapıştırın (şu an `null`)
+2. `src/config/site.ts` içinde `googleMapsUrl` alanına yapıştırın  
+   (şu an: `https://maps.app.goo.gl/Le8yQASMLKTYdnE98`)
 3. Deploy edin — `AutoPartsStore` structured data `hasMap` alır; iletişim harita/linkleri resmi yere bağlanır
 
 Koordinat (`geo`) yalnızca doğrulanmış lat/lng varsa eklenir; uydurulmaz.
