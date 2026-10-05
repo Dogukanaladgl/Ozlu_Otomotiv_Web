@@ -10,14 +10,16 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import {
-  submitInquiry,
-  type InquiryActionState,
-} from "@/app/actions/inquiry";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/Button";
-import { compressImage } from "@/lib/compress-image";
-import { partDescriptionMaxLength } from "@/lib/validation";
+import {
+  compressImage,
+  maxPostImageBytes,
+} from "@/lib/compress-image";
+import {
+  partDescriptionMaxLength,
+  type InquiryActionState,
+} from "@/lib/validation";
 import { cn } from "@/lib/cn";
 
 const initialState: InquiryActionState = { status: "idle" };
@@ -101,11 +103,7 @@ function InquiryFormFields({
       setClientImageError(`Görsel en fazla ${maxMb} MB olabilir.`);
       return;
     }
-    if (
-      !siteConfig.inquiry.acceptedImageTypes.includes(
-        file.type as AcceptedImageType,
-      )
-    ) {
+    if (!isAcceptedImageFile(file)) {
       setInputFile(acceptedFileRef.current);
       setClientImageError("Yalnızca JPG, PNG veya WEBP görseller kabul edilir.");
       return;
@@ -165,9 +163,16 @@ function InquiryFormFields({
     try {
       const image = formData.get("image");
       if (image instanceof File && image.size > 0) {
-        formData.set("image", await compressImage(image));
+        const compressed = await compressImage(image);
+        if (compressed.size > maxPostImageBytes) {
+          setClientImageError(
+            "Görsel yeterince küçültülemedi. Lütfen daha küçük bir fotoğraf seçin.",
+          );
+          return;
+        }
+        formData.set("image", compressed);
       }
-      const result = await submitInquiry(formData);
+      const result = await postInquiry(formData);
       setState(result);
       if (result.status === "success") {
         onSuccess();
@@ -464,6 +469,46 @@ function InquiryFormFields({
         </Button>
       </div>
     </form>
+  );
+}
+
+async function postInquiry(formData: FormData): Promise<InquiryActionState> {
+  const response = await fetch("/api/inquiry", {
+    method: "POST",
+    body: formData,
+  });
+
+  let data: InquiryActionState | null = null;
+  try {
+    data = (await response.json()) as InquiryActionState;
+  } catch {
+    data = null;
+  }
+
+  if (!data?.status) {
+    return {
+      status: "error",
+      message:
+        "Sorgunuz şu anda gönderilemedi. Lütfen daha sonra tekrar deneyin veya iletişim sayfasındaki diğer kanalları kullanın.",
+    };
+  }
+
+  return data;
+}
+
+function isAcceptedImageFile(file: File): boolean {
+  if (file.type === "image/jpg") return true;
+  if (
+    siteConfig.inquiry.acceptedImageTypes.includes(
+      file.type as AcceptedImageType,
+    )
+  ) {
+    return true;
+  }
+  if (file.type) return false;
+  const name = file.name.toLowerCase();
+  return siteConfig.inquiry.acceptedImageExtensions.some((ext) =>
+    name.endsWith(ext),
   );
 }
 

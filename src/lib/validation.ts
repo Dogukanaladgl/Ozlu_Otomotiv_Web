@@ -19,6 +19,12 @@ export type FieldErrors = Partial<
   Record<keyof InquiryFields | "image", string>
 >;
 
+export type InquiryActionState = {
+  status: "idle" | "success" | "error" | "validation";
+  message?: string;
+  errors?: FieldErrors;
+};
+
 export type ValidationResult =
   | { ok: true; data: InquiryFields }
   | { ok: false; errors: FieldErrors };
@@ -181,8 +187,9 @@ export async function validateInquiryImage(
     };
   }
 
-  const declaredType = file.type;
+  const declaredType = normalizeDeclaredImageType(file.type);
   if (
+    declaredType &&
     !siteConfig.inquiry.acceptedImageTypes.includes(
       declaredType as (typeof siteConfig.inquiry.acceptedImageTypes)[number],
     )
@@ -206,7 +213,7 @@ export async function validateInquiryImage(
     };
   }
 
-  if (matched.mime !== declaredType) {
+  if (declaredType && matched.mime !== declaredType) {
     return {
       ok: false,
       error: "Dosya türü, içeriğiyle uyuşmuyor. Lütfen geçerli bir görsel seçin.",
@@ -214,4 +221,12 @@ export async function validateInquiryImage(
   }
 
   return { ok: true, file, buffer, mime: matched.mime };
+}
+
+function normalizeDeclaredImageType(declaredType: string): string {
+  if (!declaredType || declaredType === "application/octet-stream") {
+    return "";
+  }
+  if (declaredType === "image/jpg") return "image/jpeg";
+  return declaredType;
 }

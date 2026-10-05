@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      // Vercel rejects request bodies above 4.5 MB.
-      bodySizeLimit: "4mb",
+      // Inquiry uploads go through /api/inquiry; keep a modest action limit.
+      bodySizeLimit: "1mb",
       allowedOrigins: [
         "www.ozluotomotiv.com",
         "ozluotomotiv.com",

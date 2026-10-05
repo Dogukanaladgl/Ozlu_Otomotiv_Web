@@ -70,11 +70,16 @@ export async function sendInquiryEmail(
     )
     .join("");
 
+  const imageNote = payload.image
+    ? `<p style="margin:16px 0 0;">Ek görsel: ${escapeHtml(payload.image.filename)}</p>`
+    : "";
+
   const html = `
     <div style="font-family:Arial,Helvetica,sans-serif;color:#111827;">
       <h1 style="font-size:18px;margin:0 0 12px;">Yeni parça sorgusu</h1>
       <p style="margin:0 0 16px;">${escapeHtml(siteConfig.name)} web sitesinden yeni bir sorgu geldi.</p>
       <table style="border-collapse:collapse;width:100%;max-width:560px;">${bodyRows}</table>
+      ${imageNote}
     </div>
   `;
 
@@ -85,7 +90,10 @@ export async function sendInquiryEmail(
     `Şasi / VIN: ${payload.fields.vin}`,
     `İstenen parça: ${payload.fields.part}`,
     `Telefon: ${payload.fields.phone}`,
-  ].join("\n");
+    payload.image ? `Ek görsel: ${payload.image.filename}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
 
   const attachments = payload.image
     ? [
@@ -108,6 +116,7 @@ export async function sendInquiryEmail(
   });
 
   if (error || !data) {
+    console.error("Resend delivery failed:", error);
     throw new Error(error?.message || "Resend delivery failed");
   }
 
