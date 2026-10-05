@@ -348,5 +348,11 @@ After production deployment:
 8. Monitor indexing.
 9. Monitor search queries and impressions.
 10. Use real search data to guide future content expansion.
+11. Keep Google Business Profile NAP, website URL and hours identical to the site.
+12. Set the official Maps place URL in `siteConfig.googleMapsUrl` when available.
+
+Operational checklist (Turkish, step-by-step):
+
+See `docs/SEARCH-CONSOLE.md`.
 
 Do not create new SEO pages based solely on guesses when real Search Console data becomes available.

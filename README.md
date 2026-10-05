@@ -34,12 +34,13 @@ npm run typecheck    # TypeScript check
 
 See `.env.example`:
 
-- `NEXT_PUBLIC_SITE_URL`
+- `NEXT_PUBLIC_SITE_URL` — production must be `https://www.ozluotomotiv.com`
+- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` — optional Search Console meta token
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
 - `CONTACT_RECIPIENT_EMAIL`
 
-Business contact details (phone, WhatsApp, email, Instagram, opening hours) are centralized in `src/config/site.ts` and must be filled with verified client data before production.
+Business contact details (phone, WhatsApp, email, Instagram, opening hours, Maps place URL) are centralized in `src/config/site.ts` and must be filled with verified client data before production.
 
 ## Documentation
 
@@ -47,5 +48,6 @@ Business contact details (phone, WhatsApp, email, Instagram, opening hours) are 
 - `docs/PROJECT.md`
 - `docs/REQUIREMENTS.md`
 - `docs/SEO.md`
+- `docs/SEARCH-CONSOLE.md` — GSC sitemap, URL Inspection, GBP checklist
 - `docs/DESIGN.md`
 - `docs/DEVELOPMENT.md`

@@ -240,6 +240,8 @@ Potential variables may include:
 
 `NEXT_PUBLIC_SITE_URL`
 
+`NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (optional Search Console HTML meta token)
+
 Only use the `NEXT_PUBLIC_` prefix for values that are intentionally safe to expose to browser code.
 
 Never place secrets in public environment variables.

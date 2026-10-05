@@ -64,9 +64,10 @@ export const siteConfig = {
   sahibindenUrl: "https://ozlucikma.sahibinden.com/" as ContactValue,
 
   /**
-   * Exact Maps place URL preferred when available.
-   * Fallback uses a search query from the verified address (no invented coordinates).
-   * TODO (client): Replace with the official Google Maps place/share URL when available.
+   * Official Google Maps place/share URL from Google Business Profile.
+   * When set, JSON-LD includes `hasMap` and map CTAs use this URL.
+   * How to get it: docs/SEARCH-CONSOLE.md → “Resmi Maps yer linki”.
+   * TODO (client): Paste the GBP Share link here (maps.app.goo.gl or maps/place).
    */
   googleMapsUrl: null as ContactValue,
 
@@ -105,13 +106,24 @@ export const siteConfig = {
 
 export type SiteConfig = typeof siteConfig;
 
-/** Google Maps link: configured URL or address search fallback. */
+/** Google Maps link: configured place URL or address search fallback. */
 export function getMapsUrl(): string {
   if (siteConfig.googleMapsUrl) {
     return siteConfig.googleMapsUrl;
   }
   const query = encodeURIComponent(siteConfig.address.formatted);
   return `https://www.google.com/maps/search/?api=1&query=${query}`;
+}
+
+/**
+ * Embeddable Maps iframe src.
+ * Uses the verified street address (no invented coordinates). When an official
+ * place URL is configured, map CTAs still use getMapsUrl(); the embed stays
+ * address-based because share short-links are not reliable iframe targets.
+ */
+export function getMapsEmbedUrl(): string {
+  const query = encodeURIComponent(siteConfig.address.formatted);
+  return `https://maps.google.com/maps?q=${query}&z=16&output=embed`;
 }
 
 /** Directions link based on verified address. */

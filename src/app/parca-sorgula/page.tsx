@@ -10,7 +10,7 @@ import { siteConfig } from "@/config/site";
 export const metadata = createPageMetadata({
   title: "Parça Sorgula",
   description:
-    "Hyundai veya Kia için yedek parça sorgusu gönderin. Marka, model, şasi numarası ve parça bilginizi Özlü Otomotiv’e iletin.",
+    "Konya Selçuklu’da Hyundai veya Kia yedek parça sorgusu gönderin. Marka, model, şasi numarası ve parça bilginizi Özlü Otomotiv’e iletin.",
   path: "/parca-sorgula",
 });
 
@@ -26,7 +26,7 @@ export default function InquiryPage() {
       <PageHero
         eyebrow="Birincil iletişim"
         title="Parça Sorgula"
-        description={`${siteConfig.name} olarak Hyundai ve Kia için parça taleplerinizi bu form üzerinden alıyoruz. Stok listesi yayınlamıyoruz; her talep ayrı incelenir.`}
+        description={`${siteConfig.name} olarak Konya Selçuklu’dan Hyundai ve Kia parça taleplerinizi bu form üzerinden alıyoruz. Stok listesi yayınlamıyoruz; her talep ayrı incelenir.`}
         contentClassName="pt-10 pb-0 sm:pt-12"
       />
 

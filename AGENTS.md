@@ -19,6 +19,7 @@ Before making substantial changes, read:
 - `docs/PROJECT.md`
 - `docs/REQUIREMENTS.md`
 - `docs/SEO.md`
+- `docs/SEARCH-CONSOLE.md`
 - `docs/DESIGN.md`
 - `docs/DEVELOPMENT.md`
 

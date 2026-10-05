@@ -7,6 +7,8 @@ import {
   getBusinessPhones,
   getDirectionsUrl,
   getMailtoHref,
+  getMapsEmbedUrl,
+  getMapsUrl,
   getWhatsAppHref,
   hasPhone,
   hasWhatsApp,
@@ -39,7 +41,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="İletişim"
         title="Bize Ulaşın"
-        description="Parça sorgusu, telefon, WhatsApp veya mağaza ziyareti ile iletişime geçebilirsiniz."
+        description={`${siteConfig.name}, ${siteConfig.address.localityLabel} adresinde Hyundai ve Kia yedek parça için telefon, WhatsApp, e-posta veya mağaza ziyareti ile ulaşabilirsiniz.`}
         contentClassName="pt-10 pb-0 sm:pt-12"
       />
 
@@ -49,7 +51,7 @@ export default function ContactPage() {
             <div className="panel order-2 flex flex-col overflow-hidden lg:order-1">
               <iframe
                 title={`${siteConfig.name} Google Haritalar`}
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(siteConfig.address.formatted)}&z=16&output=embed`}
+                src={getMapsEmbedUrl()}
                 className="h-72 w-full flex-1 border-0 sm:h-80 lg:h-auto lg:min-h-80"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -59,7 +61,16 @@ export default function ContactPage() {
                 <address className="mt-3 not-italic text-sm leading-relaxed text-muted">
                   {siteConfig.name}, {siteConfig.address.formattedShort}
                 </address>
-                <div className="mt-5 flex justify-center">
+                <div className="mt-5 flex flex-wrap justify-center gap-3">
+                  <ExternalLinkButton
+                    href={getMapsUrl()}
+                    size="sm"
+                    variant="outline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Haritada Aç
+                  </ExternalLinkButton>
                   <ExternalLinkButton
                     href={getDirectionsUrl()}
                     size="sm"

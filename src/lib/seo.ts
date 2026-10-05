@@ -79,6 +79,19 @@ export function localBusinessJsonLd() {
   if (siteConfig.googleMapsUrl) {
     data.hasMap = siteConfig.googleMapsUrl;
   }
+
+  // Verified locality only — do not invent wider service regions.
+  data.areaServed = [
+    {
+      "@type": "City",
+      name: siteConfig.address.addressRegion,
+    },
+    {
+      "@type": "AdministrativeArea",
+      name: siteConfig.address.addressLocality,
+    },
+  ];
+
   data.openingHoursSpecification = siteConfig.openingHours
     .filter((row) => row.opens && row.closes)
     .map((row) => ({
