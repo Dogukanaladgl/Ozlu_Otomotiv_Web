@@ -7,6 +7,7 @@ import {
   hasPhone,
   siteConfig,
 } from "@/config/site";
+import { OpeningHours } from "@/components/contact/OpeningHours";
 import { SocialExpandLinks } from "@/components/layout/SocialExpandLinks";
 
 export function Footer() {
@@ -36,6 +37,10 @@ export function Footer() {
           <address className="mt-5 not-italic text-sm leading-relaxed text-white/78">
             {siteConfig.address.formattedShort}
           </address>
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-white/50">
+            Çalışma Saatleri
+          </p>
+          <OpeningHours invert className="mt-3 max-w-xs" />
         </div>
 
         <div>

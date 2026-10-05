@@ -12,6 +12,7 @@ import {
 const specialties = [
   "Hyundai Yedek Parça",
   "Kia Yedek Parça",
+  "Yeni Parça Satışı",
   "Orijinal Çıkma Parça",
 ];
 

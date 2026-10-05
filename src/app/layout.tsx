@@ -33,10 +33,6 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     siteName: siteConfig.name,
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
 };
 
 export default function RootLayout({

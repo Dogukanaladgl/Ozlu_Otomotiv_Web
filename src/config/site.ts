@@ -10,9 +10,9 @@ export type ContactValue = string | null;
 export const siteConfig = {
   name: "Özlü Otomotiv",
   shortName: "Özlü Otomotiv",
-  tagline: "Hyundai ve Kia yedek parça",
+  tagline: "Konya Hyundai ve Kia Yedek Parça",
   description:
-    "Özlü Otomotiv, Selçuklu / Konya’da Hyundai ve Kia için orijinal / yeni ve orijinal çıkma yedek parça hizmeti sunar. Parça sorgusu yapın veya bizimle iletişime geçin.",
+    "Özlü Otomotiv, Selçuklu / Konya’da Hyundai ve Kia için orijinal sıfır ve orijinal çıkma yedek parça satışı yapar. Parça sorgusu gönderin veya bize ulaşın.",
   locale: "tr_TR",
   language: "tr",
 
@@ -48,8 +48,8 @@ export const siteConfig = {
 
   phones: ["0532 360 7958", "0549 423 17 17"] as const,
 
-  /** WhatsApp digits with country code (no leading 0). Uses 0532 360 7958. */
-  whatsapp: "905323607958" as ContactValue,
+  /** WhatsApp digits with country code (no leading 0). Uses 0549 423 17 17. */
+  whatsapp: "905494231717" as ContactValue,
 
   email: "murat.ozlu@hotmail.com" as ContactValue,
 
@@ -70,10 +70,24 @@ export const siteConfig = {
    */
   googleMapsUrl: null as ContactValue,
 
-  /**
-   * TODO (client): Provide verified opening hours text when available
-   */
-  openingHours: null as ContactValue,
+  /** Verified from the Google Business listing. Days without hours are closed. */
+  openingHours: [
+    {
+      label: "Pazartesi - Çarşamba",
+      days: ["Monday", "Tuesday", "Wednesday"],
+      opens: "09:00",
+      closes: "19:00",
+    },
+    { label: "Perşembe", days: ["Thursday"], opens: "09:00", closes: "17:00" },
+    { label: "Cuma", days: ["Friday"], opens: "09:00", closes: "19:00" },
+    { label: "Cumartesi", days: ["Saturday"], opens: "09:00", closes: "14:00" },
+    { label: "Pazar", days: [], opens: null, closes: null },
+  ] as ReadonlyArray<{
+    label: string;
+    days: readonly string[];
+    opens: string | null;
+    closes: string | null;
+  }>,
 
   brands: ["Hyundai", "Kia"] as const,
 

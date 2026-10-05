@@ -1,3 +1,4 @@
+import { OpeningHours } from "@/components/contact/OpeningHours";
 import { ButtonLink, ExternalLinkButton } from "@/components/ui/Button";
 import { PageHero } from "@/components/ui/PageHero";
 import { Container, SectionHeading } from "@/components/ui/Section";
@@ -45,11 +46,11 @@ export default function ContactPage() {
       <section>
         <Container className="pt-8 pb-[clamp(3.25rem,6.5vw,5.5rem)]">
           <div className="grid items-stretch gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(16rem,20rem)] lg:gap-8">
-            <div className="panel order-2 overflow-hidden lg:order-1">
+            <div className="panel order-2 flex flex-col overflow-hidden lg:order-1">
               <iframe
                 title={`${siteConfig.name} Google Haritalar`}
                 src={`https://maps.google.com/maps?q=${encodeURIComponent(siteConfig.address.formatted)}&z=16&output=embed`}
-                className="h-72 w-full border-0 sm:h-80"
+                className="h-72 w-full flex-1 border-0 sm:h-80 lg:h-auto lg:min-h-80"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
@@ -58,11 +59,6 @@ export default function ContactPage() {
                 <address className="mt-3 not-italic text-sm leading-relaxed text-muted">
                   {siteConfig.name}, {siteConfig.address.formattedShort}
                 </address>
-                {siteConfig.openingHours ? (
-                  <p className="mt-4 text-sm text-muted">
-                    Çalışma saatleri: {siteConfig.openingHours}
-                  </p>
-                ) : null}
                 <div className="mt-5 flex justify-center">
                   <ExternalLinkButton
                     href={getDirectionsUrl()}
@@ -115,8 +111,16 @@ export default function ContactPage() {
                     </dd>
                   </div>
                 ) : null}
+                <div>
+                  <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                    Çalışma Saatleri
+                  </dt>
+                  <dd className="mt-2">
+                    <OpeningHours />
+                  </dd>
+                </div>
               </dl>
-              <div className="mt-auto flex flex-col gap-3 pt-6">
+              <div className="mt-auto flex flex-col gap-3 pt-8">
                 <ButtonLink href="/parca-sorgula">Parça Sorgula</ButtonLink>
                 {hasWhatsApp() && whatsappHref ? (
                   <ExternalLinkButton

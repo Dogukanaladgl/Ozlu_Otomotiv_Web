@@ -10,8 +10,8 @@ const signals = [
     text: "Kia modelleri için parça sorgusu ve tedarik desteği sunarız.",
   },
   {
-    title: "Orijinal / Yeni Parça",
-    text: "Orijinal ve yeni yedek parça ihtiyacınız için sorgu alıyoruz.",
+    title: "Yeni Parça Satışı",
+    text: "Hyundai ve Kia için orijinal sıfır yedek parça satışı yapıyoruz; ihtiyacınız olan parçayı sorgulayabilirsiniz.",
   },
   {
     title: "Orijinal Çıkma Parça",

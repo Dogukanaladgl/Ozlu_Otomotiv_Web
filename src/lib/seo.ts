@@ -8,6 +8,13 @@ type PageMetaInput = {
   noIndex?: boolean;
 };
 
+const shareImage = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: `${siteConfig.name} - ${siteConfig.tagline}`,
+};
+
 export function absoluteUrl(path = "/"): string {
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return `${siteConfig.url}${normalized === "/" ? "" : normalized}`;
@@ -26,7 +33,7 @@ export function createPageMetadata({
       : `${title} | ${siteConfig.name}`;
 
   return {
-    title: fullTitle,
+    title: { absolute: fullTitle },
     description,
     alternates: {
       canonical: url,
@@ -38,11 +45,13 @@ export function createPageMetadata({
       siteName: siteConfig.name,
       title: fullTitle,
       description,
+      images: [shareImage],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description,
+      images: [shareImage],
     },
     robots: noIndex
       ? { index: false, follow: false }
@@ -66,6 +75,18 @@ export function localBusinessJsonLd() {
       addressCountry: siteConfig.address.addressCountry,
     },
   };
+
+  if (siteConfig.googleMapsUrl) {
+    data.hasMap = siteConfig.googleMapsUrl;
+  }
+  data.openingHoursSpecification = siteConfig.openingHours
+    .filter((row) => row.opens && row.closes)
+    .map((row) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: row.days.map((day) => `https://schema.org/${day}`),
+      opens: row.opens,
+      closes: row.closes,
+    }));
 
   const telephones = getBusinessPhones().map((phone) => phone.display);
   if (telephones.length > 0) {

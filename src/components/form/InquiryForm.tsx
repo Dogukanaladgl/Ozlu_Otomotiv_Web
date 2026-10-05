@@ -16,6 +16,7 @@ import {
 } from "@/app/actions/inquiry";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/Button";
+import { compressImage } from "@/lib/compress-image";
 import { partDescriptionMaxLength } from "@/lib/validation";
 import { cn } from "@/lib/cn";
 
@@ -154,6 +155,10 @@ function InquiryFormFields({
     }
     setPending(true);
     try {
+      const image = formData.get("image");
+      if (image instanceof File && image.size > 0) {
+        formData.set("image", await compressImage(image));
+      }
       const result = await submitInquiry(state, formData);
       setState(result);
       if (result.status === "success") {

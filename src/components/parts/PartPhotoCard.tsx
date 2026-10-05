@@ -33,7 +33,8 @@ export function PartPhotoCard({ photo, sizes, className }: PartPhotoCardProps) {
           sizes={sizes}
           quality={90}
           placeholder="blur"
-          className="aspect-[4/3] h-auto w-full object-cover"
+          style={{ objectFit: "contain" }}
+          className="aspect-[10/11] h-auto w-full bg-[#e6eaed]"
         />
       </button>
       <figcaption className="border-t border-line px-4 py-3">
@@ -50,14 +51,14 @@ export function PartPhotoCard({ photo, sizes, className }: PartPhotoCardProps) {
         aria-label={photo.name}
         className="part-viewer m-auto w-[min(92vw,64rem)] overflow-hidden rounded-[var(--radius-panel)] border-0 bg-white p-0 shadow-[0_24px_60px_rgb(15_26_40/0.28)]"
       >
-        <div className="relative h-[min(76vh,52rem)] w-full bg-surface">
+        <div className="relative h-[min(76vh,52rem)] w-full bg-[#e6eaed]">
           <Image
             src={photo.image}
             alt={alt}
             fill
             quality={90}
             sizes="(min-width: 1024px) 1024px, 92vw"
-            className="object-contain"
+            style={{ objectFit: "contain" }}
           />
         </div>
         <div className="flex items-center justify-between gap-4 border-t border-line px-4 py-3 sm:px-5">
